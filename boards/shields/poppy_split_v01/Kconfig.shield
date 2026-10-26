@@ -1,0 +1,5 @@
+config SHIELD_POPPY_SPLIT_V01_LEFT
+    def_bool $(shields_list_contains,poppy_split_v01_left)
+
+config SHIELD_POPPY_SPLIT_V01_RIGHT
+    def_bool $(shields_list_contains,poppy_split_v01_right)
