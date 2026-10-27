@@ -1,0 +1,33 @@
+// Wired split over UART1 on GP4 (TX) / GP5 (RX), Pro Micro pins D4 / D5.
+//
+// ZMK's own sparkfun_pro_micro_rp2040.overlay disables &pro_micro_serial
+// (UART0 on GP0/GP1) and is applied after shield overlays, so UART0 can't be
+// re-enabled from here. UART1 is untouched by ZMK.
+//
+// TX and RX must cross between halves: left GP4 -> right GP5, left GP5 -> right GP4.
+
+&pinctrl {
+    uart1_default: uart1_default {
+        group1 {
+            pinmux = <UART1_TX_P4>;
+        };
+        group2 {
+            pinmux = <UART1_RX_P5>;
+            input-enable;
+        };
+    };
+};
+
+&uart1 {
+    status = "okay";
+    current-speed = <115200>;
+    pinctrl-0 = <&uart1_default>;
+    pinctrl-names = "default";
+};
+
+/ {
+    wired_split {
+        compatible = "zmk,wired-split";
+        device = <&uart1>;
+    };
+};

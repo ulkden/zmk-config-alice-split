@@ -6,6 +6,8 @@
 
 #include "poppy_split_v01-layouts.dtsi"
 
+// The wired split UART is board-specific; see boards/<board>.overlay.
+
 / {
     chosen {
         zmk,physical-layout = &default_layout;
@@ -23,11 +25,15 @@
         diode-direction = "col2row";
         wakeup-source;
 
-        // Replace these comments with the GPIO pins in the matrix.
-        // See https://zmk.dev/docs/development/hardware-integration/new-shield#shield-overlays
+        // Pins use RP2040 GP numbers (&gpio0 N), which match the controller's
+        // silkscreen. &pro_micro N would mean Arduino D-numbers instead.
+        // Same row pins on both halves.
         row-gpios
-            = <&pro_micro 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            , <&pro_micro 0 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            = <&gpio0  6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // row 0: GP6,  left edge
+            , <&gpio0  7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // row 1: GP7,  left edge
+            , <&gpio0  8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // row 2: GP8,  left edge
+            , <&gpio0 12 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // row 3: GP12, bottom edge
+            , <&gpio0 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>  // row 4: GP13, bottom edge
             ;
     };
 
